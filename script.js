@@ -18,6 +18,11 @@ function showScreen(name) {
     return;
   }
 
+  // Stop music when leaving surprise screen
+  if (activeScreen === "surprise" && bgMusic) {
+    stopMusic();
+  }
+
   stage.dataset.screen = name;
   activeScreen = name;
 
@@ -150,23 +155,29 @@ giftCards.forEach((gift) => {
     
     const action = gift.dataset.action;
     
-    window.setTimeout(() => {
-      gift.classList.remove("is-open");
-      
-      if (action === "quote" && quoteModal) {
-        quoteModal.classList.add("is-open");
-      } else if (action === "empty" && videoModal && surpriseVideo) {
-        surpriseVideo.currentTime = 0;
+    if (action === "empty" && videoModal && surpriseVideo) {
+      surpriseVideo.currentTime = 0;
+      surpriseVideo.muted = false;
+      surpriseVideo.volume = 1;
+      videoModal.classList.add("is-open");
+      surpriseVideo.play().catch(() => {
         surpriseVideo.muted = false;
-        surpriseVideo.volume = 1;
-        videoModal.classList.add("is-open");
-        setTimeout(() => {
-          surpriseVideo.play();
-        }, 100);
-      } else if (action === "gallery") {
-        showScreen("surprise");
-      }
-    }, 1050);
+        surpriseVideo.play();
+      });
+      window.setTimeout(() => {
+        gift.classList.remove("is-open");
+      }, 1050);
+    } else {
+      window.setTimeout(() => {
+        gift.classList.remove("is-open");
+        
+        if (action === "quote" && quoteModal) {
+          quoteModal.classList.add("is-open");
+        } else if (action === "gallery") {
+          showScreen("song-select");
+        }
+      }, 1050);
+    }
   });
 });
 
@@ -233,79 +244,86 @@ if (photoCards.length > 0 && photoModal && modalImg && modalClose) {
   });
 }
 
-// Music Toggle Logic
+// Music & Song Selection Logic
 const musicToggle = document.getElementById("musicToggle");
 const bgMusic = document.getElementById("bgMusic");
 const musicPrompt = document.getElementById("musicPrompt");
+const songDropdown = document.getElementById("songDropdown");
+const songOptions = document.querySelectorAll(".song-option");
 let isMusicPlaying = false;
-let musicActivated = false;
+let selectedSong = "song.mp3";
 
-if (musicToggle && bgMusic) {
-  bgMusic.volume = 0.5;
-
-  function startMusic() {
-    if (!isMusicPlaying) {
-      bgMusic.play().then(() => {
-        isMusicPlaying = true;
-        musicToggle.classList.remove("is-off");
-        musicToggle.querySelector(".music-label").textContent = "Music ON";
-        if (musicPrompt) musicPrompt.classList.remove("is-visible");
-        musicActivated = true;
-      }).catch(() => {
-        // Mobile: show prompt for user to tap
-        if (musicPrompt && !musicActivated) {
-          musicPrompt.classList.add("is-visible");
-        }
-      });
-    }
+function loadSong(songFile) {
+  selectedSong = songFile;
+  bgMusic.src = "assets/" + songFile;
+  bgMusic.load();
+  if (songDropdown) {
+    songDropdown.value = songFile;
   }
+}
 
-  function stopMusic() {
-    bgMusic.pause();
-    bgMusic.currentTime = 0;
-    isMusicPlaying = false;
-    musicActivated = false;
+function playMusic() {
+  bgMusic.play().then(() => {
+    isMusicPlaying = true;
+    if (musicToggle) {
+      musicToggle.classList.remove("is-off");
+      musicToggle.querySelector(".music-label").textContent = "Music ON";
+    }
+    if (musicPrompt) musicPrompt.classList.remove("is-visible");
+  }).catch(() => {
+    if (musicPrompt) musicPrompt.classList.add("is-visible");
+  });
+}
+
+function stopMusic() {
+  bgMusic.pause();
+  bgMusic.currentTime = 0;
+  isMusicPlaying = false;
+  if (musicToggle) {
     musicToggle.classList.add("is-off");
     musicToggle.querySelector(".music-label").textContent = "Music OFF";
-    if (musicPrompt) musicPrompt.classList.remove("is-visible");
   }
+  if (musicPrompt) musicPrompt.classList.remove("is-visible");
+}
 
+// Song selection buttons
+if (songOptions.length > 0) {
+  songOptions.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const songFile = btn.dataset.song;
+      loadSong(songFile);
+      showScreen("surprise");
+      // Play immediately within user gesture
+      setTimeout(() => playMusic(), 300);
+    });
+  });
+}
+
+// Dropdown song change
+if (songDropdown) {
+  songDropdown.addEventListener("change", () => {
+    const songFile = songDropdown.value;
+    const wasPlaying = isMusicPlaying;
+    loadSong(songFile);
+    if (wasPlaying) {
+      playMusic();
+    }
+  });
+}
+
+if (musicToggle && bgMusic) {
   // Handle prompt tap
   if (musicPrompt) {
     musicPrompt.addEventListener("click", () => {
-      bgMusic.play().then(() => {
-        isMusicPlaying = true;
-        musicToggle.classList.remove("is-off");
-        musicToggle.querySelector(".music-label").textContent = "Music ON";
-        musicPrompt.classList.remove("is-visible");
-        musicActivated = true;
-      }).catch(() => {});
+      playMusic();
     });
   }
 
-  // Listen for screen changes
-  const observer = new MutationObserver(() => {
-    if (activeScreen === "surprise") {
-      startMusic();
-    } else {
-      stopMusic();
-    }
-  });
-  observer.observe(stage, { attributes: true, attributeFilter: ["data-screen"] });
-
   musicToggle.addEventListener("click", () => {
     if (isMusicPlaying) {
-      bgMusic.pause();
-      isMusicPlaying = false;
-      musicToggle.classList.add("is-off");
-      musicToggle.querySelector(".music-label").textContent = "Music OFF";
+      stopMusic();
     } else {
-      bgMusic.play().then(() => {
-        isMusicPlaying = true;
-        musicToggle.classList.remove("is-off");
-        musicToggle.querySelector(".music-label").textContent = "Music ON";
-        if (musicPrompt) musicPrompt.classList.remove("is-visible");
-      }).catch(() => {});
+      playMusic();
     }
   });
 }

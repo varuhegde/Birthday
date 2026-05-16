@@ -4,13 +4,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
   <title>Virtual Gift</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
     href="https://fonts.googleapis.com/css2?family=Bangers&family=Pacifico&family=Patrick+Hand&family=Paytone+One&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=2" />
+  <link rel="stylesheet" href="styles.css" id="mainCSS" />
 </head>
 
 <body>
@@ -248,7 +251,34 @@
         <button class="next-script" data-next="gift">Next</button>
       </article>
 
+      <article class="screen screen-song-select" data-view="song-select">
+        <div class="song-select-content">
+          <h2 class="song-select-title">Pick a Song 🎵</h2>
+          <div class="song-options">
+            <button class="song-option" data-song="song.mp3" data-name="Kalyani">
+              <span class="song-icon"></span>
+              <span class="song-name">Kalyani</span>
+            </button>
+            <button class="song-option" data-song="song2.mp3" data-name="Kanaa - Othaiyadi Pathayila">
+              <span class="song-icon"></span>
+              <span class="song-name">Kanaa - Othaiyadi Pathayila</span>
+            </button>
+            <button class="song-option" data-song="song3.mp3" data-name="Ninna Notavu">
+              <span class="song-icon"></span>
+              <span class="song-name">Ninna Notavu</span>
+            </button>
+          </div>
+        </div>
+      </article>
+
       <article class="screen screen-surprise" data-view="surprise">
+        <div class="surprise-header">
+          <select class="song-dropdown" id="songDropdown">
+            <option value="song.mp3">Kalyani</option>
+            <option value="song2.mp3">Kanaa - Othaiyadi Pathayila</option>
+            <option value="song3.mp3">Ninna Notavu</option>
+          </select>
+        </div>
         <div class="music-prompt" id="musicPrompt">
           <span>🎵 Tap anywhere to play music</span>
         </div>
@@ -462,7 +492,22 @@
       </video>
     </div>
   </main>
-  <script src="script.js?v=2"></script>
+  <script>
+    // Auto cache bust on every page load
+    const v = Date.now();
+    document.getElementById('mainCSS').href = 'styles.css?v=' + v;
+    const scriptTag = document.querySelector('script[src="script.js"]');
+    if (scriptTag) scriptTag.src = 'script.js?v=' + v;
+    // Cache bust all assets
+    document.querySelectorAll('img[src^="assets/"]').forEach(img => {
+      img.src = img.src.split('?')[0] + '?v=' + v;
+    });
+    const audioSrc = document.querySelector('#bgMusic source');
+    if (audioSrc) audioSrc.src = audioSrc.src.split('?')[0] + '?v=' + v;
+    const videoSrc = document.querySelector('#surpriseVideo source');
+    if (videoSrc) videoSrc.src = videoSrc.src.split('?')[0] + '?v=' + v;
+  </script>
+  <script src="script.js"></script>
 </body>
 
 </html>

@@ -549,6 +549,102 @@ h2 {
   color: #ce5e93;
 }
 
+/* ── Song Select Screen ── */
+.screen-song-select {
+  align-content: center;
+  padding: 20px 0;
+}
+
+.song-select-content {
+  text-align: center;
+  width: 90%;
+  max-width: 500px;
+}
+
+.song-select-title {
+  font-family: "Pacifico", cursive;
+  font-size: clamp(28px, 5vw, 48px);
+  color: var(--berry);
+  margin: 0 0 30px;
+  text-shadow: 2px 2px 0 rgba(80, 5, 35, 0.15);
+  animation: titleFadeIn 600ms ease both;
+}
+
+.song-options {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.song-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 24px;
+  border: 2px solid var(--berry);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--berry);
+  font-family: "Patrick Hand", cursive;
+  font-size: clamp(16px, 3vw, 22px);
+  cursor: pointer;
+  transition: all 200ms ease;
+  box-shadow: 0 4px 12px rgba(80, 5, 35, 0.1);
+  text-align: left;
+}
+
+.song-option:hover {
+  background: var(--berry);
+  color: #fff;
+  transform: scale(1.03);
+  box-shadow: 0 8px 20px rgba(80, 5, 35, 0.2);
+}
+
+.song-option:active {
+  transform: scale(0.98);
+}
+
+.song-icon {
+  font-size: 24px;
+}
+
+.song-icon::before {
+  content: '🎶';
+}
+
+/* ── Surprise Header with Dropdown ── */
+.surprise-header {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 20;
+}
+
+.song-dropdown {
+  padding: 8px 14px;
+  border: 2px solid var(--berry);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--berry);
+  font-family: "Patrick Hand", cursive;
+  font-size: 14px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0 2px 8px rgba(80, 5, 35, 0.1);
+  transition: all 200ms ease;
+  max-width: 200px;
+}
+
+.song-dropdown:hover {
+  background: var(--berry);
+  color: #fff;
+}
+
+.song-dropdown option {
+  background: var(--paper-warm);
+  color: var(--berry);
+}
+
 /* ── Surprise Screen ── */
 .screen-surprise {
   align-content: start;
@@ -1337,6 +1433,29 @@ h2 {
     min-width: 120px;
     min-height: 46px;
     font-size: 20px;
+  }
+
+  /* ── Mobile: Song Select ── */
+  .song-select-title {
+    font-size: clamp(24px, 7vw, 36px);
+    margin-bottom: 20px;
+  }
+
+  .song-option {
+    padding: 14px 18px;
+    font-size: clamp(14px, 4vw, 18px);
+  }
+
+  /* ── Mobile: Song Dropdown ── */
+  .surprise-header {
+    top: 8px;
+    right: 8px;
+  }
+
+  .song-dropdown {
+    font-size: 12px;
+    padding: 6px 10px;
+    max-width: 160px;
   }
 }
 @keyframes fuego {
