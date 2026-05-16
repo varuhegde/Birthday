@@ -1,11 +1,9 @@
 const stage = document.querySelector(".paper-stage");
 const screens = [...document.querySelectorAll(".screen")];
 const buttons = document.querySelectorAll("[data-next]");
-const sparkles = document.querySelector(".sparkles");
-const giftCard = document.querySelector(".gift-card");
+const giftCards = document.querySelectorAll(".gift-card");
 
 let activeScreen = "intro";
-let sparkleTimer = window.setInterval(makeHeart, 620);
 let blowTimeout = null;
 
 function showScreen(name) {
@@ -36,7 +34,6 @@ function showScreen(name) {
 
   window.setTimeout(() => {
     next.classList.add("is-active");
-    burstHearts(name === "birthday" || name === "surprise" ? 18 : 8);
 
     // Start auto-blow countdown when birthday screen appears
     if (name === "birthday") {
@@ -121,7 +118,6 @@ function showCelebration(container) {
   if (!overlay) return;
 
   overlay.classList.add('is-visible');
-  burstHearts(25);
 
   // Auto-hide after 5 seconds
   setTimeout(() => {
@@ -129,27 +125,7 @@ function showCelebration(container) {
   }, 5000);
 }
 
-function makeHeart() {
-  if (!sparkles) {
-    window.clearInterval(sparkleTimer);
-    return;
-  }
-
-  const heart = document.createElement("span");
-  heart.innerHTML = "&hearts;";
-  heart.style.left = `${Math.random() * 84 + 8}%`;
-  heart.style.top = `${Math.random() * 70 + 18}%`;
-  heart.style.animationDuration = `${Math.random() * 1.4 + 2.6}s`;
-  heart.style.fontSize = `${Math.random() * 18 + 16}px`;
-  sparkles.appendChild(heart);
-  window.setTimeout(() => heart.remove(), 4200);
-}
-
-function burstHearts(amount) {
-  for (let i = 0; i < amount; i += 1) {
-    window.setTimeout(makeHeart, i * 45);
-  }
-}
+/* Removed makeHeart and burstHearts functions */
 
 buttons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -161,13 +137,47 @@ buttons.forEach((button) => {
   });
 });
 
-giftCard.addEventListener("click", () => {
-  giftCard.classList.add("is-open");
-  burstHearts(28);
-  window.setTimeout(() => {
-    giftCard.classList.remove("is-open");
-    showScreen("surprise");
-  }, 1050);
+const quoteModal = document.getElementById("quoteModal");
+const prankModal = document.getElementById("prankModal");
+const closeBtns = document.querySelectorAll(".close-modal");
+
+giftCards.forEach((gift) => {
+  gift.addEventListener("click", () => {
+    if (gift.classList.contains("is-open")) return;
+    
+    gift.classList.add("is-open");
+    
+    const action = gift.dataset.action;
+    
+    window.setTimeout(() => {
+      // Remove is-open so the gift is reset and ready to be clicked again when they come back
+      gift.classList.remove("is-open");
+      
+      if (action === "quote" && quoteModal) {
+        quoteModal.classList.add("is-open");
+      } else if (action === "empty" && prankModal) {
+        prankModal.classList.add("is-open");
+      } else if (action === "gallery") {
+        showScreen("surprise");
+      }
+    }, 1050);
+  });
+});
+
+closeBtns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const targetId = btn.dataset.target;
+    const modal = document.getElementById(targetId);
+    if (modal) modal.classList.remove("is-open");
+  });
+});
+
+[quoteModal, prankModal].forEach((modal) => {
+  if (modal) {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) modal.classList.remove("is-open");
+    });
+  }
 });
 
 document.addEventListener("pointermove", (event) => {
@@ -177,8 +187,6 @@ document.addEventListener("pointermove", (event) => {
   stage.style.setProperty("--tilt-x", `${x * 8}deg`);
   stage.style.setProperty("--tilt-y", `${y * -8}deg`);
 });
-
-burstHearts(8);
 
 // Photo Gallery Modal Logic
 const photoCards = document.querySelectorAll(".photo-card");
