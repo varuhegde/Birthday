@@ -138,7 +138,8 @@ buttons.forEach((button) => {
 });
 
 const quoteModal = document.getElementById("quoteModal");
-const prankModal = document.getElementById("prankModal");
+const videoModal = document.getElementById("videoModal");
+const surpriseVideo = document.getElementById("surpriseVideo");
 const closeBtns = document.querySelectorAll(".close-modal");
 
 giftCards.forEach((gift) => {
@@ -150,19 +151,28 @@ giftCards.forEach((gift) => {
     const action = gift.dataset.action;
     
     window.setTimeout(() => {
-      // Remove is-open so the gift is reset and ready to be clicked again when they come back
       gift.classList.remove("is-open");
       
       if (action === "quote" && quoteModal) {
         quoteModal.classList.add("is-open");
-      } else if (action === "empty" && prankModal) {
-        prankModal.classList.add("is-open");
+      } else if (action === "empty" && videoModal && surpriseVideo) {
+        surpriseVideo.currentTime = 0;
+        surpriseVideo.play();
+        videoModal.classList.add("is-open");
       } else if (action === "gallery") {
         showScreen("surprise");
       }
     }, 1050);
   });
 });
+
+// Auto-close video when it ends
+if (surpriseVideo && videoModal) {
+  surpriseVideo.addEventListener("ended", () => {
+    videoModal.classList.remove("is-open");
+    surpriseVideo.pause();
+  });
+}
 
 closeBtns.forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -172,7 +182,7 @@ closeBtns.forEach((btn) => {
   });
 });
 
-[quoteModal, prankModal].forEach((modal) => {
+[quoteModal, videoModal].forEach((modal) => {
   if (modal) {
     modal.addEventListener("click", (e) => {
       if (e.target === modal) modal.classList.remove("is-open");
@@ -222,28 +232,57 @@ if (photoCards.length > 0 && photoModal && modalImg && modalClose) {
 // Music Toggle Logic
 const musicToggle = document.getElementById("musicToggle");
 const bgMusic = document.getElementById("bgMusic");
+const musicPrompt = document.getElementById("musicPrompt");
 let isMusicPlaying = false;
+let musicActivated = false;
 
 if (musicToggle && bgMusic) {
   bgMusic.volume = 0.5;
 
-  function resetMusicButton() {
-    isMusicPlaying = false;
-    musicToggle.classList.add("is-off");
-    musicToggle.querySelector(".music-label").textContent = "Music OFF";
+  function startMusic() {
+    if (!isMusicPlaying) {
+      bgMusic.play().then(() => {
+        isMusicPlaying = true;
+        musicToggle.classList.remove("is-off");
+        musicToggle.querySelector(".music-label").textContent = "Music ON";
+        if (musicPrompt) musicPrompt.classList.remove("is-visible");
+        musicActivated = true;
+      }).catch(() => {
+        // Mobile: show prompt for user to tap
+        if (musicPrompt && !musicActivated) {
+          musicPrompt.classList.add("is-visible");
+        }
+      });
+    }
   }
 
   function stopMusic() {
     bgMusic.pause();
     bgMusic.currentTime = 0;
-    resetMusicButton();
+    isMusicPlaying = false;
+    musicActivated = false;
+    musicToggle.classList.add("is-off");
+    musicToggle.querySelector(".music-label").textContent = "Music OFF";
+    if (musicPrompt) musicPrompt.classList.remove("is-visible");
+  }
+
+  // Handle prompt tap
+  if (musicPrompt) {
+    musicPrompt.addEventListener("click", () => {
+      bgMusic.play().then(() => {
+        isMusicPlaying = true;
+        musicToggle.classList.remove("is-off");
+        musicToggle.querySelector(".music-label").textContent = "Music ON";
+        musicPrompt.classList.remove("is-visible");
+        musicActivated = true;
+      }).catch(() => {});
+    });
   }
 
   // Listen for screen changes
   const observer = new MutationObserver(() => {
     if (activeScreen === "surprise") {
-      // On mobile, autoplay is blocked. Show button as OFF so user can tap to play.
-      resetMusicButton();
+      startMusic();
     } else {
       stopMusic();
     }
@@ -253,12 +292,15 @@ if (musicToggle && bgMusic) {
   musicToggle.addEventListener("click", () => {
     if (isMusicPlaying) {
       bgMusic.pause();
-      resetMusicButton();
+      isMusicPlaying = false;
+      musicToggle.classList.add("is-off");
+      musicToggle.querySelector(".music-label").textContent = "Music OFF";
     } else {
       bgMusic.play().then(() => {
         isMusicPlaying = true;
         musicToggle.classList.remove("is-off");
         musicToggle.querySelector(".music-label").textContent = "Music ON";
+        if (musicPrompt) musicPrompt.classList.remove("is-visible");
       }).catch(() => {});
     }
   });

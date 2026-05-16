@@ -241,6 +241,9 @@
       </article>
 
       <article class="screen screen-surprise" data-view="surprise">
+        <div class="music-prompt" id="musicPrompt">
+          <span>🎵 Tap anywhere to play music</span>
+        </div>
         <div class="surprise-content">
           <h2 class="surprise-title">Memories &hearts;</h2>
           <button class="music-toggle" id="musicToggle" aria-label="Toggle music">
@@ -445,12 +448,10 @@
       </div>
     </div>
     </div>
-    <div class="quote-modal" id="prankModal">
-      <div class="quote-content">
-        <h3>Oops!</h3>
-        <p>Just a prank! There's nothing in this one <br>Try picking another gift!</p>
-        <button class="pill primary small close-modal" data-target="prankModal">Back</button>
-      </div>
+    <div class="video-modal" id="videoModal">
+      <video id="surpriseVideo" muted playsinline>
+        <source src="assets/video.mp4" type="video/mp4" />
+      </video>
     </div>
   </main>
   <script src="script.js"></script>

@@ -518,6 +518,37 @@ h2 {
   animation: titleFadeIn 600ms ease both;
 }
 
+.music-prompt {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  background: rgba(238, 233, 216, 0.92);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 400ms ease, visibility 400ms ease;
+  cursor: pointer;
+}
+
+.music-prompt.is-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.music-prompt span {
+  font-family: "Patrick Hand", cursive;
+  font-size: clamp(20px, 4vw, 32px);
+  color: var(--berry);
+  animation: promptPulse 2s ease-in-out infinite;
+}
+
+@keyframes promptPulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+}
+
 .music-toggle {
   display: flex;
   align-items: center;
@@ -810,6 +841,33 @@ h2 {
 .gift-card img {
   width: 100%;
   display: block;
+}
+
+.video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 300ms ease, visibility 300ms ease;
+}
+
+.video-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.video-modal video {
+  width: clamp(280px, 90vw, 700px);
+  max-height: 85vh;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  object-fit: contain;
 }
 
 /* Quote Modal Styles */
