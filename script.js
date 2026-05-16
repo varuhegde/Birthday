@@ -179,3 +179,34 @@ document.addEventListener("pointermove", (event) => {
 });
 
 burstHearts(8);
+
+// Photo Gallery Modal Logic
+const photoCards = document.querySelectorAll(".photo-card");
+const photoModal = document.getElementById("photoModal");
+const modalImg = document.getElementById("modalImg");
+const modalClose = document.querySelector(".modal-close");
+
+if (photoCards.length > 0 && photoModal && modalImg && modalClose) {
+  photoCards.forEach(card => {
+    card.addEventListener("click", () => {
+      const img = card.querySelector(".photo-img");
+      if (img) {
+        modalImg.src = img.src;
+        photoModal.classList.add("is-open");
+      }
+    });
+  });
+
+  const closeModal = () => {
+    photoModal.classList.remove("is-open");
+    setTimeout(() => { modalImg.src = ""; }, 300);
+  };
+
+  modalClose.addEventListener("click", closeModal);
+  
+  photoModal.addEventListener("click", (e) => {
+    if (e.target === photoModal) {
+      closeModal();
+    }
+  });
+}
