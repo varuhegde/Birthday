@@ -160,12 +160,20 @@ giftCards.forEach((gift) => {
       surpriseVideo.muted = false;
       surpriseVideo.volume = 1;
       videoModal.classList.add("is-open");
+      // Load and play immediately for mobile gesture chain
+      surpriseVideo.load();
       surpriseVideo.play().catch(() => {
+        // Fallback: try again after a tiny delay
         surpriseVideo.muted = false;
         surpriseVideo.play();
       });
       window.setTimeout(() => {
         gift.classList.remove("is-open");
+      }, 1050);
+    } else if (action === "gallery") {
+      window.setTimeout(() => {
+        gift.classList.remove("is-open");
+        showScreen("song-select");
       }, 1050);
     } else {
       window.setTimeout(() => {
@@ -173,8 +181,6 @@ giftCards.forEach((gift) => {
         
         if (action === "quote" && quoteModal) {
           quoteModal.classList.add("is-open");
-        } else if (action === "gallery") {
-          showScreen("song-select");
         }
       }, 1050);
     }
@@ -293,8 +299,17 @@ if (songOptions.length > 0) {
       const songFile = btn.dataset.song;
       loadSong(songFile);
       showScreen("surprise");
-      // Play immediately within user gesture
-      setTimeout(() => playMusic(), 300);
+      // Play immediately - no delay for mobile gesture chain
+      bgMusic.play().then(() => {
+        isMusicPlaying = true;
+        if (musicToggle) {
+          musicToggle.classList.remove("is-off");
+          musicToggle.querySelector(".music-label").textContent = "Music ON";
+        }
+        if (musicPrompt) musicPrompt.classList.remove("is-visible");
+      }).catch(() => {
+        if (musicPrompt) musicPrompt.classList.add("is-visible");
+      });
     });
   });
 }
