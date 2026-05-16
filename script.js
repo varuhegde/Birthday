@@ -227,30 +227,23 @@ let isMusicPlaying = false;
 if (musicToggle && bgMusic) {
   bgMusic.volume = 0.5;
 
-  function startMusic() {
-    if (!isMusicPlaying) {
-      bgMusic.play().then(() => {
-        isMusicPlaying = true;
-        musicToggle.classList.remove("is-off");
-        musicToggle.querySelector(".music-label").textContent = "Music ON";
-      }).catch(() => {
-        isMusicPlaying = false;
-      });
-    }
+  function resetMusicButton() {
+    isMusicPlaying = false;
+    musicToggle.classList.add("is-off");
+    musicToggle.querySelector(".music-label").textContent = "Music OFF";
   }
 
   function stopMusic() {
     bgMusic.pause();
     bgMusic.currentTime = 0;
-    isMusicPlaying = false;
-    musicToggle.classList.remove("is-off");
-    musicToggle.querySelector(".music-label").textContent = "Music ON";
+    resetMusicButton();
   }
 
   // Listen for screen changes
   const observer = new MutationObserver(() => {
     if (activeScreen === "surprise") {
-      startMusic();
+      // On mobile, autoplay is blocked. Show button as OFF so user can tap to play.
+      resetMusicButton();
     } else {
       stopMusic();
     }
@@ -260,9 +253,7 @@ if (musicToggle && bgMusic) {
   musicToggle.addEventListener("click", () => {
     if (isMusicPlaying) {
       bgMusic.pause();
-      isMusicPlaying = false;
-      musicToggle.classList.add("is-off");
-      musicToggle.querySelector(".music-label").textContent = "Music OFF";
+      resetMusicButton();
     } else {
       bgMusic.play().then(() => {
         isMusicPlaying = true;
