@@ -242,43 +242,45 @@
 
       <article class="screen screen-surprise" data-view="surprise">
         <div class="surprise-content">
-          <h2 class="surprise-title">Our Memories &hearts;</h2>
+          <h2 class="surprise-title">Memories &hearts;</h2>
+          <button class="music-toggle" id="musicToggle" aria-label="Toggle music">
+            <span class="music-icon">🎵</span>
+            <span class="music-label">Music ON</span>
+          </button>
+          <audio id="bgMusic" loop>
+            <source src="assets/song.mp3" type="audio/mpeg" />
+          </audio>
           <div class="clothesline">
             <div class="rope"></div>
             <div class="gallery-photos">
               <div class="photo-hang" style="--delay: 0s; --rot: -6deg;">
                 <div class="clip"></div>
                 <div class="photo-card">
-                  <img class="photo-img" src="https://picsum.photos/seed/mem1/300/300" alt="Memory" />
-                  <p class="photo-caption">Sunsets with you</p>
+                  <img class="photo-img" src="assets/1.jpg" alt="Memory" />
                 </div>
               </div>
               <div class="photo-hang" style="--delay: 0.12s; --rot: 4deg;">
                 <div class="clip"></div>
                 <div class="photo-card">
-                  <img class="photo-img" src="https://picsum.photos/seed/mem2/300/300" alt="Memory" />
-                  <p class="photo-caption">Flower days</p>
+                  <img class="photo-img" src="assets/2.jpg" alt="Memory" />
                 </div>
               </div>
               <div class="photo-hang" style="--delay: 0.24s; --rot: -3deg;">
                 <div class="clip"></div>
                 <div class="photo-card">
-                  <img class="photo-img" src="https://picsum.photos/seed/mem3/300/300" alt="Memory" />
-                  <p class="photo-caption">Coffee dates</p>
+                  <img class="photo-img" src="assets/3.jpg" alt="Memory" />
                 </div>
               </div>
               <div class="photo-hang" style="--delay: 0.36s; --rot: 5deg;">
                 <div class="clip"></div>
                 <div class="photo-card">
-                  <img class="photo-img" src="https://picsum.photos/seed/mem4/300/300" alt="Memory" />
-                  <p class="photo-caption">Dancing nights</p>
+                  <img class="photo-img" src="assets/4.jpg" alt="Memory" />
                 </div>
               </div>
               <div class="photo-hang" style="--delay: 0.48s; --rot: -4deg;">
                 <div class="clip"></div>
                 <div class="photo-card">
-                  <img class="photo-img" src="https://picsum.photos/seed/mem5/300/300" alt="Memory" />
-                  <p class="photo-caption">Forever us</p>
+                  <img class="photo-img" src="assets/5.jpg" alt="Memory" />
                 </div>
               </div>
             </div>
@@ -287,29 +289,43 @@
               <div class="photo-hang" style="--delay: 0.6s; --rot: 3deg;">
                 <div class="clip"></div>
                 <div class="photo-card">
-                  <img class="photo-img" src="https://picsum.photos/seed/mem6/300/300" alt="Memory" />
-                  <p class="photo-caption">Late night talks</p>
+                  <img class="photo-img" src="assets/6.jpg" alt="Memory" />
                 </div>
               </div>
               <div class="photo-hang" style="--delay: 0.72s; --rot: -5deg;">
                 <div class="clip"></div>
                 <div class="photo-card">
-                  <img class="photo-img" src="https://picsum.photos/seed/mem7/300/300" alt="Memory" />
-                  <p class="photo-caption">Our playlist</p>
+                  <img class="photo-img" src="assets/7.jpg" alt="Memory" />
                 </div>
               </div>
               <div class="photo-hang" style="--delay: 0.84s; --rot: 2deg;">
                 <div class="clip"></div>
                 <div class="photo-card">
-                  <img class="photo-img" src="https://picsum.photos/seed/mem8/300/300" alt="Memory" />
-                  <p class="photo-caption">Food adventures</p>
+                  <img class="photo-img" src="assets/8.jpg" alt="Memory" />
                 </div>
               </div>
               <div class="photo-hang" style="--delay: 0.96s; --rot: -2deg;">
                 <div class="clip"></div>
                 <div class="photo-card">
-                  <img class="photo-img" src="https://picsum.photos/seed/mem9/300/300" alt="Memory" />
-                  <p class="photo-caption">Stargazing</p>
+                  <img class="photo-img" src="assets/9.jpg" alt="Memory" />
+                </div>
+              </div>
+              <div class="photo-hang" style="--delay: 1.08s; --rot: 4deg;">
+                <div class="clip"></div>
+                <div class="photo-card">
+                  <img class="photo-img" src="assets/10.jpg" alt="Memory" />
+                </div>
+              </div>
+              <div class="photo-hang" style="--delay: 1.2s; --rot: -3deg;">
+                <div class="clip"></div>
+                <div class="photo-card">
+                  <img class="photo-img" src="assets/11.jpg" alt="Memory" />
+                </div>
+              </div>
+              <div class="photo-hang" style="--delay: 1.32s; --rot: 2deg;">
+                <div class="clip"></div>
+                <div class="photo-card">
+                  <img class="photo-img" src="assets/12.jpg" alt="Memory" />
                 </div>
               </div>
             </div>
@@ -408,6 +424,7 @@
             </svg>
           </button>
         </div>
+        <button class="pill primary small play-again" data-next="intro">Play Again</button>
       </article>
 
       <!-- Photo Modal -->
@@ -422,11 +439,11 @@
     <!-- Gift Modals (outside screen to fix mobile fixed positioning) -->
     <div class="quote-modal" id="quoteModal">
       <div class="quote-content">
-        <h3>For You...</h3>
-        <p>"In all the world, there is no heart for me like yours. In all the world, there is no love for you like
-          mine."</p>
+        <h3>Happy Birthday! 🎶🐶</h3>
+        <p>Happy Birthday to a wonderful professor with the voice of an angel and the heart of a true dog lover. Your height may be compact, but your presence definitely isn't—and your height may be short, but your talent definitely isn't, especially when you sing 😄 You're basically my Spotify Premium—ad-free happiness and unlimited good vibes. Wishing you an amazing year ahead!</p>
         <button class="pill primary small close-modal" data-target="quoteModal">Back</button>
       </div>
+    </div>
     </div>
     <div class="quote-modal" id="prankModal">
       <div class="quote-content">

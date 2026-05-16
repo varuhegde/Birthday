@@ -218,3 +218,57 @@ if (photoCards.length > 0 && photoModal && modalImg && modalClose) {
     }
   });
 }
+
+// Music Toggle Logic
+const musicToggle = document.getElementById("musicToggle");
+const bgMusic = document.getElementById("bgMusic");
+let isMusicPlaying = false;
+
+if (musicToggle && bgMusic) {
+  bgMusic.volume = 0.5;
+
+  function startMusic() {
+    if (!isMusicPlaying) {
+      bgMusic.play().then(() => {
+        isMusicPlaying = true;
+        musicToggle.classList.remove("is-off");
+        musicToggle.querySelector(".music-label").textContent = "Music ON";
+      }).catch(() => {
+        isMusicPlaying = false;
+      });
+    }
+  }
+
+  function stopMusic() {
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+    isMusicPlaying = false;
+    musicToggle.classList.remove("is-off");
+    musicToggle.querySelector(".music-label").textContent = "Music ON";
+  }
+
+  // Listen for screen changes
+  const observer = new MutationObserver(() => {
+    if (activeScreen === "surprise") {
+      startMusic();
+    } else {
+      stopMusic();
+    }
+  });
+  observer.observe(stage, { attributes: true, attributeFilter: ["data-screen"] });
+
+  musicToggle.addEventListener("click", () => {
+    if (isMusicPlaying) {
+      bgMusic.pause();
+      isMusicPlaying = false;
+      musicToggle.classList.add("is-off");
+      musicToggle.querySelector(".music-label").textContent = "Music OFF";
+    } else {
+      bgMusic.play().then(() => {
+        isMusicPlaying = true;
+        musicToggle.classList.remove("is-off");
+        musicToggle.querySelector(".music-label").textContent = "Music ON";
+      }).catch(() => {});
+    }
+  });
+}
