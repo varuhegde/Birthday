@@ -10,10 +10,18 @@
   <link
     href="https://fonts.googleapis.com/css2?family=Bangers&family=Pacifico&family=Patrick+Hand&family=Paytone+One&display=swap"
     rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=2" />
 </head>
 
 <body>
+  <div class="headphone-prompt" id="headphonePrompt">
+    <div class="prompt-content">
+      <span class="prompt-icon"></span>
+      <h3>For the best experience</h3>
+      <p>Please use headphones for better performance!</p>
+      <button class="pill primary small" id="closePrompt">Got it!</button>
+    </div>
+  </div>
   <main class="gift-app" aria-live="polite">
     <section class="paper-stage" data-screen="intro">
       <div class="side-shape left"></div>
@@ -454,7 +462,7 @@
       </video>
     </div>
   </main>
-  <script src="script.js"></script>
+  <script src="script.js?v=2"></script>
 </body>
 
 </html>

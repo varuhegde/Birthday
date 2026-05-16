@@ -157,8 +157,12 @@ giftCards.forEach((gift) => {
         quoteModal.classList.add("is-open");
       } else if (action === "empty" && videoModal && surpriseVideo) {
         surpriseVideo.currentTime = 0;
-        surpriseVideo.play();
+        surpriseVideo.muted = false;
+        surpriseVideo.volume = 1;
         videoModal.classList.add("is-open");
+        setTimeout(() => {
+          surpriseVideo.play();
+        }, 100);
       } else if (action === "gallery") {
         showScreen("surprise");
       }
@@ -303,5 +307,15 @@ if (musicToggle && bgMusic) {
         if (musicPrompt) musicPrompt.classList.remove("is-visible");
       }).catch(() => {});
     }
+  });
+}
+
+// Headphone Prompt
+const headphonePrompt = document.getElementById("headphonePrompt");
+const closePrompt = document.getElementById("closePrompt");
+
+if (headphonePrompt && closePrompt) {
+  closePrompt.addEventListener("click", () => {
+    headphonePrompt.classList.add("is-hidden");
   });
 }
