@@ -665,7 +665,7 @@ h2 {
   box-shadow: 0 20px 40px rgba(0,0,0,0.5);
   transform: scale(0.9);
   transition: transform 300ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  max-width: 90vw;
+  width: clamp(280px, 85vw, 600px); /* Forces it to be large on mobile */
   max-height: 90vh;
 }
 
@@ -675,9 +675,10 @@ h2 {
 
 .modal-content img {
   display: block;
-  max-width: 100%;
-  max-height: calc(90vh - 40px);
-  object-fit: contain;
+  width: 100%; /* Fill the container width */
+  height: 100%;
+  max-height: calc(85vh - 40px); /* Prevent overflowing screen height */
+  object-fit: contain; /* Scale proportionally without distorting */
   border-radius: 2px;
 }
 
